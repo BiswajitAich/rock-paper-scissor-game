@@ -1,16 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-const API: string | undefined = process.env.ROCK_PAPER_SCISSOR_FLASK_API;
-if (!API) {
-    throw new Error("ROCK_PAPER_SCISSOR_FLASK_API is not defined in environment variables.");
-}
+
 export async function POST(request: NextRequest) {
+    const API = process.env.ROCK_PAPER_SCISSOR_FLASK_API;
+    if (!API) {
+        console.error("Missing Flask API URL");
+        return NextResponse.json({ 
+            error: 'Server configuration error' 
+        }, { status: 500 });
+    }
+
     try {
         const formData = await request.formData();
         const file = formData.get('image');
         if (!file) {
             return new Response(JSON.stringify({ error: 'No file uploaded' }), { status: 400 });
         }
-        const response = await fetch(API!, {
+        const response = await fetch(API, {
             method: "POST",
             body: formData,
             headers: {
