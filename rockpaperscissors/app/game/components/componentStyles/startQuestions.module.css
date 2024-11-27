@@ -1,0 +1,53 @@
+.container {
+    background: linear-gradient(45deg, cyan, orange);
+    border-radius: 12px;
+    position: relative;
+    transform: translateX(50%);
+    right: 50%;
+    text-align: center;
+}
+
+.h2 {
+    background-color: #00000073;
+    padding: 10px 0;
+}
+
+.p{
+    background: #000000a8;
+    padding: 10px 0;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    max-width: 600px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 10px;
+}
+
+.buttons button:not(:last-child) {
+    padding: 10px;
+    background-color: cadetblue;
+    border: 8px solid transparent;
+    border-radius: 8px;
+}
+
+.btn_begin {
+    background-color: #ff0f7b;
+    border-radius: 50px;
+    padding: 15px 70px;
+    border: none;
+    margin-top: 18px;
+}
+
+.btn_begin:hover {
+    box-shadow: inset 0px 0px 10px white;
+}
+
+.btn_begin[clicked="true"] {
+    box-shadow: inset 0px 0px 10px black;
+}

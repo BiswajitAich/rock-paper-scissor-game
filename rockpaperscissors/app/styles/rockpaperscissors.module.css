@@ -1,0 +1,40 @@
+.controller {
+    position: fixed;
+    bottom: 0;
+    right: -10px;
+    transform: rotate(331deg);
+    z-index: -10;
+    filter: drop-shadow(10px 10px 5px #bd4721) drop-shadow(-10px -10px 5px #59eff8) drop-shadow(0px 0px 200px #ff00809c);
+}
+
+.main {
+    width: 100%;
+    height: 100dvh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding-top: 10px;
+}
+
+.start_container {
+    width: 90dvw;
+    min-height: 90dvh;
+    background: linear-gradient(90deg, #000123, #00012333);
+    border-radius: 28px;
+    padding: 35px;
+    box-shadow: 0px 0px 15px #ff149385;
+}
+
+@media (max-width: 600px) {
+    .start_container {
+        width: 100%;
+        height: fit-content;
+        padding: 10px;
+    }
+    .main {
+        align-items: flex-start;
+    }
+    
+}
