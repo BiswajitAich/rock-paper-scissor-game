@@ -147,13 +147,16 @@ const GameTime = (
     const sendData = async (imageData: string) => {
         try {
             setGameOver(true)
-            const url = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app"
-            const base = process.env.NODE_ENV === "development" ? url : ""
+            const url = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app";
+            const base = process.env.NODE_ENV === "development" ? url : "https://rock-paper-scissor-game-roan-seven.vercel.app";
+            
             console.log(`${base}/api/prediction`);
+            
             const response = await fetch(`${base}/api/prediction`, {
                 method: "POST",
                 body: createFormData(imageData),
             });
+            
             
             if (!response.ok) {
                 console.error("Error response from API:", response.status, response.statusText);
