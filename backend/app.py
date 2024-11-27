@@ -2,8 +2,9 @@ from ultralytics import YOLO
 from flask import Flask, request, jsonify
 from PIL import Image
 import os
+from flask_cors import CORS
 app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
+CORS(app)
 MODEL_PATH = "model/rock-paper-scissors-best.pt"
 model = YOLO(MODEL_PATH)
 @app.route('/predict', methods=['POST'])
