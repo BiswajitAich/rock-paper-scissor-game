@@ -7,11 +7,15 @@ interface GameScore {
     ai: number;
     winner: string;
 }
-const WinnerDeclaration = ({ scores, playAgain }: { scores: GameScore, playAgain:(play:string)=>void }) => {
+const WinnerDeclaration = ({ scores, playAgain }: { scores: GameScore, playAgain: (play: string) => void }) => {
     return (
         <div>
             <h1 className={styles.h1}>! Scores !</h1>
-            <h2 className={styles.h2}>...<span style={{ color: "greenyellow" }}>{scores.winner}</span> won...</h2>
+            {scores.winner === "draw" ?
+                <h2 className={styles.h2}>... it is <span style={{ color: "greenyellow" }}>{scores.winner}</span> ...</h2>
+                :
+                <h2 className={styles.h2}>...<span style={{ color: "greenyellow" }}>{scores.winner}</span> won...</h2>
+            }
             <div className={styles.p_div}>
                 <p>ai scored: <span>{scores.ai}</span></p>
                 <p>you scored: <span>{scores.human}</span></p>
@@ -44,7 +48,7 @@ const WinnerDeclaration = ({ scores, playAgain }: { scores: GameScore, playAgain
                 :
                 <p className={styles.p}>better luck next time</p>
             }
-            <button className={styles.button} onClick={()=>playAgain("start-questions")}>play again</button>
+            <button className={styles.button} onClick={() => playAgain("start-questions")}>play again</button>
         </div>
     );
 }

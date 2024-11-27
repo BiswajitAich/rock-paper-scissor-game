@@ -21,7 +21,7 @@ const GameTime = (
     const [rounds, setRounds] = useState<number[]>([selectedRound, selectedRound]);
     const [aiSelected, setAiSelected] = useState<string>("r_p_s");
     const [humanSelected, setHumanSelected] = useState<string>("r_p_s");
-    const [capturedImage, setCapturedImage] = useState<string | null>(null);
+    // const [capturedImage, setCapturedImage] = useState<string | null>(null);
     const [counting, setCounting] = useState<number | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -90,7 +90,7 @@ const GameTime = (
 
                 const dataUrl = canvas.toDataURL("image/jpeg");
                 sendData(dataUrl)
-                setCapturedImage(dataUrl);
+                // setCapturedImage(dataUrl);
             }
         }
     };
@@ -147,14 +147,13 @@ const GameTime = (
     const sendData = async (imageData: string) => {
         try {
             setGameOver(true)
-            const url = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app";
-            const base = process.env.NODE_ENV === "development" ? url : "https://rock-paper-scissor-game-roan-seven.vercel.app";
-            
+            const base = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app";            
             console.log(`${base}/api/prediction`);
             
             const response = await fetch(`${base}/api/prediction`, {
                 method: "POST",
                 body: createFormData(imageData),
+                cache: 'no-cache'
             });
             
             
@@ -346,7 +345,7 @@ const GameTime = (
                                 className={styles.videoElement}
                             />
                         )}
-                        {humanSelected === "captured" && capturedImage && (
+                        {/* {humanSelected === "captured" && capturedImage && (
                             <Image
                                 src={capturedImage}
                                 alt="Captured"
@@ -359,7 +358,7 @@ const GameTime = (
                                     objectFit: "cover",
                                 }}
                             />
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>
