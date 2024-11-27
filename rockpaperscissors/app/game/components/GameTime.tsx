@@ -150,6 +150,9 @@ const GameTime = (
             });
             if (!response.ok) {
                 console.error("Error response from API:", response.status, response.statusText);
+                setAiSelected('r_p_s')
+                setHumanSelected('r_p_s')
+                setWinner(["", ""])
                 return;
             }
             const data = await response.json();
