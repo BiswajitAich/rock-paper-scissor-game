@@ -13,10 +13,10 @@ interface GameScore {
 }
 const GameTime = (
     { selectedRound, sendgameScores }:
-    {
-        selectedRound: number,
-        sendgameScores: (score:GameScore) => void
-    }
+        {
+            selectedRound: number,
+            sendgameScores: (score: GameScore) => void
+        }
 ) => {
     const [rounds, setRounds] = useState<number[]>([selectedRound, selectedRound]);
     const [aiSelected, setAiSelected] = useState<string>("r_p_s");
@@ -40,6 +40,7 @@ const GameTime = (
 
     const handleCamera = async () => {
         if (cameraStarted) return;
+        setGameOver(true)
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
@@ -107,6 +108,7 @@ const GameTime = (
         }
         setCameraStarted(false);
         setHumanSelected("captured");
+        setGameOver(false)
     };
 
 
@@ -144,15 +146,21 @@ const GameTime = (
     };
     const sendData = async (imageData: string) => {
         try {
-            const response = await fetch("/api/prediction", {
+            setGameOver(true)
+            const url = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app"
+            const base = process.env.NODE_ENV === "development" ? url : ""
+            console.log(`${base}/api/prediction`);
+            const response = await fetch(`${base}/api/prediction`, {
                 method: "POST",
                 body: createFormData(imageData),
             });
+            
             if (!response.ok) {
                 console.error("Error response from API:", response.status, response.statusText);
                 setAiSelected('r_p_s')
                 setHumanSelected('r_p_s')
                 setWinner(["", ""])
+                setGameOver(false)
                 return;
             }
             const data = await response.json();
@@ -165,11 +173,13 @@ const GameTime = (
                 setAiSelected('r_p_s')
                 setHumanSelected('r_p_s')
                 setWinner(["", ""])
+                setGameOver(false)
                 return
             }
             setAiSelected(generateChoice())
             setModelResponseFlag(r)
             setHumanSelected(r)
+            setGameOver(false)
             console.log("API Response:", data);
         } catch (error) {
             console.error("Error sending to Flask:", error);
@@ -186,7 +196,7 @@ const GameTime = (
         else setWinner([res, res])
         setRounds(prev => [prev[0], gameRef.current.getRemainingRounds()])
         if (gameRef.current.getRemainingRounds() === 0) {
-            setTimeout(()=>sendgameScores(gameRef.current.getScores()), 3000);
+            setTimeout(() => sendgameScores(gameRef.current.getScores()), 3000);
             setGameOver(true)
         }
     }
