@@ -14,13 +14,12 @@ def predict():
     image_file = request.files['image']
     try:
         img = Image.open(image_file.stream).convert('RGB')
-        # img = img.resize((112, 112))
+        img = img.resize((64, 64))
     except Exception as e:
         return jsonify({'error': f'Failed to process image---: {str(e)}'}), 400
     try:
         model = YOLO(MODEL_PATH)
-        # results = model(img)
-        results = model(img, imgsz=112)
+        results = model(img, imgsz=64)
         if results and results[0].boxes is not None and len(results[0].boxes) > 0:
             class_idx = int(results[0].boxes[0].cls.item()) 
             predicted_class = results[0].names[class_idx]   

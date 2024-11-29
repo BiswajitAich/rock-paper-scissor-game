@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
         if (!response.ok) {
             // const errorData = await response.json();
-            // console.error("Flask API Error:", errorData);
+            console.error("Flask API Error:::");
             return NextResponse.json({ error: 'Failed to process image' }, { status: response.status });
         }
 
