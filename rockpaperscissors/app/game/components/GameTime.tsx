@@ -147,7 +147,7 @@ const GameTime = (
     const sendData = async (imageData: string) => {
         try {
             setGameOver(true)
-            const base = window.location.origin || "https://rock-paper-scissor-game-roan-seven.vercel.app";            
+            const base = window.location.origin || "https://rock-paper-scissor-game-by-yolo.vercel.app";            
             console.log(`${base}/api/prediction`);
             
             const response = await fetch(`${base}/api/prediction`, {
