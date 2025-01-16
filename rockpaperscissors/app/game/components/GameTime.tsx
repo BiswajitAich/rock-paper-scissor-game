@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import rock from "@/public/images/rock.png";
 import paper from "@/public/images/paper.png";
 import scissors from "@/public/images/scissors.png";
 import r_p_s from "@/public/images/rock-paper-scissors-gif.gif";
 import styles from "@/app/game/components/componentStyles/gameTime.module.css";
 import GameLogic from "@/app/game/logic/gamelogic";
+const HealthStatus = dynamic(() => import("@/app/game/components/HealthStatus"))
+
 interface GameScore {
     human: number;
     ai: number;
@@ -30,15 +33,44 @@ const GameTime = (
     const [modelResponseFlag, setModelResponseFlag] = useState<string>("none");
     const [winner, setWinner] = useState<string[]>([]);
     const [gameOver, setGameOver] = useState<boolean>(false);
+    const [health, setHealth] = useState<string[]>(["notOk", "Please wait, the server is starting and will launch automatically in a minute or two!"]);
+    const [dispHealth, setDispHealth] = useState<boolean>(false);
 
     const gameRef = useRef<GameLogic>(new GameLogic(selectedRound));
+
     useEffect(() => {
         // Reset the game if a new round is selected
         gameRef.current = new GameLogic(selectedRound);
         setRounds([selectedRound, selectedRound]);
     }, [selectedRound]);
 
+
     const handleCamera = async () => {
+
+        if (health[0] === "notOk") {
+            setDispHealth(true);
+            const base = window.location.origin || "https://rock-paper-scissor-game-by-yolo.vercel.app";
+            console.log(`${base}/api/health`);
+
+            const response = await fetch(`${base}/api/health`, {
+                method: "GET",
+                cache: 'no-cache'
+            });
+            // console.log((await response.json()).health);
+            const result = (await response.json()).health
+            if (result === "notOk") {
+                setHealth([result,"Something went wrong please try reloading the page!"])
+            } else {
+                setHealth(()=>[result, "Server is online!"])
+                const timeout = setTimeout(() => {
+                    setDispHealth(false);
+                }, 3000);
+            
+                return () => clearTimeout(timeout);
+            }
+            return
+        }
+
         if (cameraStarted) return;
         setGameOver(true)
         try {
@@ -147,16 +179,16 @@ const GameTime = (
     const sendData = async (imageData: string) => {
         try {
             setGameOver(true)
-            const base = window.location.origin || "https://rock-paper-scissor-game-by-yolo.vercel.app";            
+            const base = window.location.origin || "https://rock-paper-scissor-game-by-yolo.vercel.app";
             console.log(`${base}/api/prediction`);
-            
+
             const response = await fetch(`${base}/api/prediction`, {
                 method: "POST",
                 body: createFormData(imageData),
                 cache: 'no-cache'
             });
-            
-            
+
+
             if (!response.ok) {
                 console.error("Error response from API:", response.status, response.statusText);
                 setAiSelected('r_p_s')
@@ -338,6 +370,10 @@ const GameTime = (
                         )}
                         {humanSelected === "cam" && (
                             <video
+                                style={{
+                                    transform: 'scaleX(-1)',
+                                    WebkitTransform: 'scaleX(-1)'
+                                }}
                                 ref={videoRef}
                                 autoPlay
                                 playsInline
@@ -362,8 +398,9 @@ const GameTime = (
                     </div>
                 </div>
             </div>
+            {dispHealth ? <HealthStatus data={health[1]} /> : null}
             {counting !== null ? <p className={styles.counting}>footage will be captured in: <span>{counting}</span></p> : null}
-            <button onClick={handleCamera} disabled={gameOver} className={styles.begin}>start the round</button>
+            <button onClick={handleCamera} disabled={gameOver || dispHealth} className={styles.begin}>start the round</button>
             <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </div>
     );

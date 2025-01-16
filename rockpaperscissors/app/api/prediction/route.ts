@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
     const API = process.env.NODE_ENV_ROCK_PAPER_SCISSOR_API;
+    // const API = null
     if (!API) {
         console.error("Missing Flask API URL");
         return NextResponse.json({ 
