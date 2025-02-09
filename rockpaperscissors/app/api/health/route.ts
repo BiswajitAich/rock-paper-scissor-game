@@ -1,18 +1,32 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
+    console.log("called!");
+
     try {
         const API = process.env.NODE_ENV_ROCK_PAPER_SCISSOR_API_HEALTH;
-        // const API = null;
-        if (!API){
-            console.error("warning: env API (health) not found!");
-            return NextResponse.json({ health: "notOk" }, { status: 500 });         
+        if (!API) {
+            console.error("Warning: env API (health) not found!");
+            return NextResponse.json({ health: "notOk" }, { status: 200 });
         }
-        const response=await fetch(API, {method: 'GET'});
-        console.log(response)
-        return NextResponse.json({health: response.text}, {status: 200});
+
+        console.log("Fetching API:", API);
+        const response = await fetch(API, { method: "GET" });
+
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
+        }
+
+
+        const healthText = await response.text();
+        console.log("Health Response (JSON):", healthText);
+
+
+        return NextResponse.json({ health: healthText }, { status: 200 });
     } catch (e) {
-        console.error(e)
-        return NextResponse.json({ health: "notOk" }, { status: 500 });
+        console.error("GET error:", e);
+        return NextResponse.json({ health: "notOk" }, { status: 200 });
     }
 }
