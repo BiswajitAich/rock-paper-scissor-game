@@ -10,6 +10,13 @@
   }
 }
 
+* {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -ms-touch-select: none;
+}
+
 html,
 body {
   max-width: 100vw;
