@@ -40,5 +40,5 @@ yarn-error.log*
 next-env.d.ts
 
 ####################
-/public/model
+
 /public/scissors.webp

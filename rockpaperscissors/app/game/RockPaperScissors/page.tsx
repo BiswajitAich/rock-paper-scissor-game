@@ -1,14 +1,14 @@
-"use client"
+"use client";
 import Image from "next/image";
 import styles from "@/app/styles/rockpaperscissors.module.css"
 import controller from "@/public/images/game-controller.png"
 import dynamic from "next/dynamic";
 import { useState } from "react";
-const StartContainer = dynamic(() => import("@/app/game/components/StartContainer"))
-const StartQuestions = dynamic(() => import("@/app/game/components/StartQuestions"))
-const GameTime = dynamic(() => import("@/app/game/components/GameTime"))
-const Vs = dynamic(() => import("@/app/game/components/Vs"))
-const WinnerDeclaration = dynamic(() => import("@/app/game/components/WinnerDeclaration"))
+const StartContainer = dynamic(() => import("@/app/game/components/StartContainer"),{ssr: false})
+const StartQuestions = dynamic(() => import("@/app/game/components/StartQuestions"),{ssr: false})
+const GameTimeT = dynamic(() => import("@/app/game/components/GameTimeT"),{ssr: false})
+const Vs = dynamic(() => import("@/app/game/components/Vs"),{ssr: false})
+const WinnerDeclaration = dynamic(() => import("@/app/game/components/WinnerDeclaration"),{ssr: false})
 interface GameScore {
     human: number;
     ai: number;
@@ -47,7 +47,7 @@ const RockPaperScissors = () => {
                 {displayState === "start" ? <StartContainer sendFlag={handleFlagChange} /> : null}
                 {displayState === "start-questions" ? <StartQuestions beginWithSelectedRound={handleSelectedRounds} /> : null}
                 {displayState === "vs" ? <Vs /> : null}
-                {displayState === "game-time" ? <GameTime selectedRound={selectedRound} sendgameScores={handleGameScore}/> : null}
+                {displayState === "game-time" ? <GameTimeT selectedRound={selectedRound} sendgameScores={handleGameScore}/> : null}
                 {displayState === "winner-declaration" ? <WinnerDeclaration scores={scores} playAgain={setDisplayState}/> : null}
             </div>
             <Image
