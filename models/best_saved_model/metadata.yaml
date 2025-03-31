@@ -1,0 +1,21 @@
+description: Ultralytics YOLOv12n model trained on /content/rock-paper-scissors-14/data.yaml
+author: Ultralytics
+date: '2025-03-31T09:19:34.831563'
+version: 8.3.99
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 416
+- 416
+names:
+  0: Paper
+  1: Rock
+  2: Scissors
+args:
+  batch: 1
+  keras: false
+  int8: false
+  nms: false
